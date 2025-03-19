@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from livekit.agents import AutoSubscribe, JobContext, WorkerOptions, cli, llm
 from livekit.agents.voice_assistant import VoiceAssistant
 from livekit.plugins import silero, google
-from api import AssistantFnc
+from personAI.server.api import AssistantFnc
 from livekit.plugins.deepgram import tts, stt
 
 load_dotenv()
