@@ -91,4 +91,4 @@ while True:
     print(f"🤖 AI ({selected_persona}): {ai_response}")
 
     # Send response to another function (e.g., Text-to-Speech)
-    # convert_to_speech(ai_response)  # Uncomment this if integrating TTS
+    # convert_to_speech(ai_response)  # Uncomment this if integrating ttS
