@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from livekit.agents import AutoSubscribe, JobContext, WorkerOptions, cli, llm
 from livekit.agents.voice_assistant import VoiceAssistant
-from livekit.plugins import openai, silero
+from livekit.plugins import silero, google
 from api import AssistantFnc
 from livekit.plugins.deepgram import tts, stt
 
@@ -13,8 +13,6 @@ deepgram_tts = tts.TTS(
     model="aura-angus-en",
     api_key=os.getenv("DEEPGRAM_API_KEY"),
 )
-
-from livekit.plugins import google
 
 google_llm = google.LLM(
   model="gemini-2.0-flash",
