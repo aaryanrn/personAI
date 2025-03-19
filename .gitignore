@@ -137,6 +137,10 @@ ENV/
 env.bak/
 venv.bak/
 
+./client/.env.local
+./client/node_modules/
+./client/.next/
+
 # Spyder project settings
 .spyderproject
 .spyproject
