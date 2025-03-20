@@ -2,8 +2,9 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 def initialize_firebase():
-    cred = credentials.Certificate("../personai-dfb78-firebase-adminsdk-fbsvc-7ce7b2b7d7.json")
-    firebase_admin.initialize_app(cred)
+    if not firebase_admin._apps:
+        cred = credentials.Certificate("../personai-dfb78-firebase-adminsdk-fbsvc-7ce7b2b7d7.json")
+        firebase_admin.initialize_app(cred)
     return firestore.client()
 
 def fetch_data_from_firebase(identity):
@@ -14,4 +15,4 @@ def fetch_data_from_firebase(identity):
     if doc.exists:
         return doc.to_dict()
     else:
-        return "No such document!"
+        return ""

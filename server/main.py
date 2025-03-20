@@ -58,11 +58,13 @@ async def entrypoint(ctx: JobContext):
 
     def handle_participant(participant: rtc.Participant):
         """Handle new participants joining"""
-        
+
         identity = participant.identity
         result = fetch_data_from_firebase(identity)
         print(result)
-        update_persona_ai(result)
+        if(len(result)!=0):
+            update_persona_ai(result)
+        
 
         session = ParticipantSession(ctx, participant)
         sessions[participant.sid] = session
