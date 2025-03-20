@@ -19,7 +19,7 @@ def restart_assistant():
         assistant_process = None
 
     # Start the assistant in the background
-    assistant_process = subprocess.Popen(["py", "run_assistant.py", "start"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    assistant_process = subprocess.Popen(["py", "main.py", "start"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     print("✅ AI Assistant restarted successfully!")
 
 @app.route('/api/update_persona', methods=['POST'])
