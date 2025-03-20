@@ -6,6 +6,9 @@ from livekit.agents import JobContext, WorkerOptions, cli, llm
 from livekit.agents.voice_assistant import VoiceAssistant
 from models import AssistantComponents  # Importing model container
 from persona import generate_system_prompt  # ✅ Import system prompt dynamically
+from firebase import fetch_data_from_firebase
+
+from persona import update_persona_ai
 
 # Load environment variables
 load_dotenv()
@@ -25,6 +28,8 @@ class ParticipantSession:
 
         # Generate system prompt dynamically
         system_prompt = generate_system_prompt()
+        print(f"in main py ass {system_prompt}")
+        
         logger.info(f"System Prompt: {system_prompt}")
 
         # Create Chat Context
@@ -53,6 +58,12 @@ async def entrypoint(ctx: JobContext):
 
     def handle_participant(participant: rtc.Participant):
         """Handle new participants joining"""
+        
+        identity = participant.identity
+        result = fetch_data_from_firebase(identity)
+        print(result)
+        update_persona_ai(result)
+
         session = ParticipantSession(ctx, participant)
         sessions[participant.sid] = session
 
