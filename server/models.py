@@ -1,32 +1,31 @@
 import os
-from livekit.plugins.deepgram import stt, tts
-from livekit.plugins.google import LLM
+from livekit.plugins.openai import stt
 from dotenv import load_dotenv
+from livekit.plugins.google import LLM
+from livekit.plugins import google
 
 # Load environment variables
 load_dotenv()
 
+# Initialize STT (Speech-to-Text)
 def initialize_stt():
-    """Initialize Speech-to-Text (STT) using Deepgram."""
-    return stt.STT(
-        model="nova-2-general",
-        interim_results=True,
-        smart_format=True,
-        punctuate=True,
-        filler_words=True,
-        profanity_filter=False,
-        keywords=[("LiveKit", 1.5)],
-        language="en-US",
-        api_key=os.getenv("DEEPGRAM_API_KEY"),
+    """Initialize Speech-to-Text using GROQ STT."""
+    groq_stt = stt.STT.with_groq(
+    model="whisper-large-v3-turbo",
     )
+    
+    return groq_stt
 
 def initialize_tts():
-    """Initialize Text-to-Speech (TTS) using Deepgram."""
-    return tts.TTS(
-        model="aura-angus-en",
-        api_key=os.getenv("DEEPGRAM_API_KEY"),
-    )
+    """Initialize Text-to-Speech using Cartesia TTS."""
 
+    google_tts = google.TTS(
+    gender="female",
+    voice_name="en-US-Standard-H",
+    )
+    return google_tts
+
+# Initialize LLM (Keep Google Gemini for now)
 def initialize_llm():
     """Initialize LLM (Gemini 2.0) using Google API."""
     return LLM(
