@@ -1,75 +1,44 @@
-# app.py - Flask application for persona configuration
-from flask import Flask, request, jsonify
-import os
 import subprocess
 import time
 import signal
-from dotenv import load_dotenv
+from flask import Flask, request, jsonify
 
-load_dotenv()
 app = Flask(__name__)
 
-# Hardcoded persona for testing
-PERSONA = {
-    "persona_name": "Alex",
-    "sex": "non-binary",
-    "role": "technical advisor",
-    "traits": "extensive knowledge in programming and AI",
-    "tone": "friendly and informative",
-    "purpose": "help users solve technical problems",
-    "response_type": "concise yet detailed, with practical examples",
-    "backstory": "Alex has 10 years of experience in software development and AI research"
-}
-
-# Global variable to track the assistant process
+# Store process reference globally
 assistant_process = None
 
-def generate_system_prompt(persona):
-    """Generate a system prompt from a persona dictionary"""
-    return f"""You are {persona['persona_name']}, a {persona['sex']} {persona['role']} known for {persona['traits']}. 
-    You communicate in a {persona['tone']} manner. Your primary objective is to {persona['purpose']}. 
-    You provide responses that are {persona['response_type']}. 
-    Your Backstory is {persona['backstory']}."""
+def restart_assistant():
+    """Stops the existing process (if running) and starts run_assistant.py again."""
+    global assistant_process
+
+    # Stop the previous process if it's running
+    if assistant_process:
+        assistant_process.terminate()  # Graceful stop
+        time.sleep(2)  # Wait for process to terminate
+        assistant_process = None
+
+    # Start the assistant in the background
+    assistant_process = subprocess.Popen(["py", "run_assistant.py", "start"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print("✅ AI Assistant restarted successfully!")
 
 @app.route('/api/update_persona', methods=['POST'])
 def update_persona():
-    """Update the persona with the provided information."""
-    global PERSONA
+    """Update the persona and restart the assistant."""
     try:
-        # Get the new persona data from the request
         new_persona_data = request.json
-        
-        # Validate the persona data
-        required_fields = ["persona_name", "sex", "role", "traits", "tone", 
-                           "purpose", "response_type", "backstory"]
-        
-        # Check if all required fields are present
-        missing_fields = [field for field in required_fields if field not in new_persona_data]
-        if missing_fields:
-            return jsonify({
-                "status": "error", 
-                "message": f"Missing required fields: {', '.join(missing_fields)}"
-            }), 400
-            
-        # Update the persona
+
+        # Update the global persona (you can store this in memory)
+        global PERSONA
         PERSONA = new_persona_data
         
-        # Generate the system prompt
-        system_prompt = generate_system_prompt(PERSONA)
-        
-        # Save the system prompt to a file that the assistant script can read
-        with open('system_prompt.txt', 'w') as f:
-            f.write(system_prompt)
-        
-        return jsonify({
-            "status": "success", 
-            "message": "Persona updated successfully",
-            "persona": PERSONA,
-            "system_prompt": system_prompt
-        })
+        # Restart the assistant with the new persona
+        restart_assistant()
+
+        return jsonify({"status": "success", "message": "Persona updated and AI Assistant restarted"}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-
 if __name__ == '__main__':
+    # Start Flask server
     app.run(debug=True, host='0.0.0.0', port=5000)
