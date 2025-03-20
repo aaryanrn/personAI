@@ -1,35 +1,42 @@
 import os
-from livekit.plugins.openai import stt
 from dotenv import load_dotenv
-from livekit.plugins.google import LLM
-from livekit.plugins import google
+from dataclasses import dataclass
+from livekit.plugins import google, silero
+from livekit.plugins.deepgram import stt, tts
 
 # Load environment variables
 load_dotenv()
 
-# Initialize STT (Speech-to-Text)
-def initialize_stt():
-    """Initialize Speech-to-Text using GROQ STT."""
-    groq_stt = stt.STT.with_groq(
-    model="whisper-large-v3-turbo",
-    )
-    
-    return groq_stt
+DEEPGRAM_KEY = os.getenv("DEEPGRAM_API_KEY")
+GOOGLE_KEY = os.getenv("GOOGLE_API_KEY")
 
-def initialize_tts():
-    """Initialize Text-to-Speech using Cartesia TTS."""
+@dataclass
+class AssistantComponents:
+    """Container for processing components per user"""
+    vad: silero.VAD
+    stt: stt.STT
+    tts: tts.TTS
+    llm: google.LLM
+    assistant: object  # Placeholder for VoiceAssistant
 
-    google_tts = google.TTS(
-    gender="female",
-    voice_name="en-US-Standard-H",
-    )
-    return google_tts
-
-# Initialize LLM (Keep Google Gemini for now)
-def initialize_llm():
-    """Initialize LLM (Gemini 2.0) using Google API."""
-    return LLM(
-        model="gemini-2.0-flash",
-        temperature=0.8,
-        api_key=os.getenv("GOOGLE_API_KEY"),
-    )
+    @staticmethod
+    def create():
+        """Factory method to create an instance with configured components."""
+        return AssistantComponents(
+            vad=silero.VAD.load(),
+            stt=stt.STT(
+                model="nova-2-general",
+                api_key=DEEPGRAM_KEY,
+                language="en-US"
+            ),
+            tts=tts.TTS(
+                model="aura-angus-en",
+                api_key=DEEPGRAM_KEY
+            ),
+            llm=google.LLM(
+                model="gemini-2.0-flash",
+                temperature=0.8,
+                api_key=GOOGLE_KEY
+            ),
+            assistant=None  # Will be assigned later
+        )

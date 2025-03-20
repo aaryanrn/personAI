@@ -2,7 +2,7 @@
 
 # Default persona
 PERSONA = {
-    "persona_name": "Alex",
+    "persona_name": "Bob",
     "sex": "non-binary",
     "role": "technical advisor",
     "traits": "extensive knowledge in programming and AI",
@@ -12,7 +12,8 @@ PERSONA = {
     "backstory": "Alex has 10 years of experience in software development and AI research"
 }
 
-def generate_system_prompt():
+def generate_system_prompt(PERSONA=PERSONA):
+    print(PERSONA)
     """Generate a system prompt from the current persona."""
     return f"""You are {PERSONA['persona_name']}, a {PERSONA['sex']} {PERSONA['role']} known for {PERSONA['traits']}. 
     You communicate in a {PERSONA['tone']} manner. Your primary objective is to {PERSONA['purpose']}. 

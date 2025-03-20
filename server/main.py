@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 from livekit import agents, rtc
 from livekit.agents import JobContext, WorkerOptions, cli, llm
 from livekit.agents.voice_assistant import VoiceAssistant
-from models import AssistantComponents  # Importing model container
-from persona import generate_system_prompt  # ✅ Import system prompt dynamically
+from models import AssistantComponents
+from persona import generate_system_prompt # ✅ Import update_persona function
 
 # Load environment variables
 load_dotenv()
@@ -16,11 +16,12 @@ logger = logging.getLogger("multi_assistant")
 
 class ParticipantSession:
     """Manages all resources for a single participant"""
+
     def __init__(self, ctx: JobContext, participant: rtc.Participant):
         self.ctx = ctx
         self.participant = participant
 
-        # Initialize processing components from models.py
+        # Initialize processing components
         self.components = AssistantComponents.create()
 
         # Generate system prompt dynamically
@@ -70,8 +71,18 @@ async def entrypoint(ctx: JobContext):
     ctx.room.on("participant_connected", lambda p: handle_participant(p))
 
     # Keep running
-    while True:
-        await asyncio.sleep(1)
+    # while True:
+    #     await asyncio.sleep(1)
+
+async def restart_assistant_async():
+    """Asynchronously restart the assistant."""
+    logger.info("Restarting AI Assistant with new persona...")
+    await cli.run_app(WorkerOptions(entrypoint_fnc=entrypoint))
+
+def restart_assistant():
+    """Function to restart assistant dynamically when persona updates."""
+    logger.info("Restarting AI Assistant with new persona...")
+    asyncio.run(restart_assistant_async())
 
 if __name__ == "__main__":
-    cli.run_app(WorkerOptions(entrypoint_fnc=entrypoint))
+    restart_assistant()
