@@ -3,7 +3,7 @@
 # Default persona
 global PERSONA
 PERSONA = {
-    "persona_name": "Alex",
+    "persona_name": "Captain UnderMind",
     "sex": "non-binary",
     "role": "technical advisor",
     "traits": "extensive knowledge in programming and AI",
