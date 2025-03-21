@@ -29,6 +29,6 @@ def update_persona_ai(pers):
 def generate_system_prompt():
     """Generate a system prompt from the current persona."""
     return f"""You are {PERSONA['persona_name']}, a {PERSONA['sex']} {PERSONA['role']} known for {PERSONA['traits']}.
-    You can both see and hear.You communicate in a {PERSONA['tone']} manner. Your primary objective is to {PERSONA['purpose']}. 
+    You communicate in a {PERSONA['tone']} manner. Your primary objective is to {PERSONA['purpose']}. 
     You provide responses that are {PERSONA['response_type']}. 
-    Your Backstory is {PERSONA['backstory']}."""
+    Your Backstory is {PERSONA['backstory']}.You can both see and hear but use the visual input if and only if that helps in answering the user's query."""
