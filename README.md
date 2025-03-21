@@ -97,7 +97,7 @@ python main.py start
 
 ## 🔹 License  
 
-📜 This project is licensed under the **MIT License** – feel free to use, modify, and distribute.  
+📜 This project is licensed under the [MIT License](LICENSE) – feel free to use, modify, and distribute.
 
 ---
 
