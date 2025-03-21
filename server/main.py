@@ -12,6 +12,8 @@ from livekit.agents.llm import ChatMessage, ChatImage
 
 from persona import update_persona_ai
 
+import time
+
 # Load environment variables
 load_dotenv()
 
@@ -104,10 +106,23 @@ async def entrypoint(ctx: JobContext):
         """Handle new participants joining"""
 
         identity = participant.identity
-        result = fetch_data_from_firebase(identity)
-        print(result)
-        if(len(result)!=0):
-            update_persona_ai(result)
+        count=2  #No. of time it fetches until it founds the data in database of that particular identity
+        while (count>0):
+            result = fetch_data_from_firebase(identity)
+            print(result)
+            if len(result) != 0:
+                update_persona_ai(result)
+                break  # Exit the loop when data is fetched successfully
+            
+            print("No data found. Retrying in 1 seconds...")
+            time.sleep(1)  # Wait for 5 seconds before retrying
+            count=count-1
+
+
+        # result = fetch_data_from_firebase(identity)
+        # print(result)
+        # if(len(result)!=0):
+        #     update_persona_ai(result)
         
 
         session = ParticipantSession(ctx, participant)
