@@ -3,10 +3,12 @@ import logging
 from dotenv import load_dotenv
 from livekit import agents, rtc
 from livekit.agents import JobContext, WorkerOptions, cli, llm
-from livekit.agents.voice_assistant import VoiceAssistant
+from livekit.agents.voice_assistant import VoiceAssistant, VoicePipelineAgent
 from models import AssistantComponents  # Importing model container
 from persona import generate_system_prompt  # ✅ Import system prompt dynamically
 from firebase import fetch_data_from_firebase
+from livekit import rtc
+from livekit.agents.llm import ChatMessage, ChatImage
 
 from persona import update_persona_ai
 
@@ -29,6 +31,17 @@ class ParticipantSession:
         # Generate system prompt dynamically
         system_prompt = generate_system_prompt()
         print(f"in main py ass {system_prompt}")
+
+        async def before_llm_cb(assistant: VoicePipelineAgent, chat_ctx: llm.ChatContext):
+            """
+            Callback that runs right before the LLM generates a response.
+            Captures the current video frame and adds it to the conversation context.
+            """
+            latest_image = await get_latest_image(self.ctx.room)
+            if latest_image:
+                image_content = [ChatImage(image=latest_image)]
+                chat_ctx.messages.append(ChatMessage(role="user", content=image_content))
+                logger.debug("Added latest frame to conversation context")
         
         logger.info(f"System Prompt: {system_prompt}")
 
@@ -42,6 +55,7 @@ class ParticipantSession:
             llm=self.components.llm,
             tts=self.components.tts,
             chat_ctx=self.chat_context,
+            before_llm_cb=before_llm_cb
         )
 
         # Start processing
@@ -52,8 +66,38 @@ class ParticipantSession:
         if self.components.assistant:
             await self.components.assistant.aclose()
 
+async def get_video_track(room: rtc.Room):
+    """Find and return the first available remote video track in the room."""
+    for participant_id, participant in room.remote_participants.items():
+        for track_id, track_publication in participant.track_publications.items():
+            if track_publication.track and isinstance(
+                track_publication.track, rtc.RemoteVideoTrack
+            ):
+                logger.info(
+                    f"Found video track {track_publication.track.sid} "
+                    f"from participant {participant_id}"
+                )
+                return track_publication.track
+    raise ValueError("No remote video track found in the room")
+
+async def get_latest_image(room: rtc.Room):
+    """Capture and return a single frame from the video track."""
+    video_stream = None
+    try:
+        video_track = await get_video_track(room)
+        video_stream = rtc.VideoStream(video_track)
+        async for event in video_stream:
+            logger.debug("Captured latest video frame")
+            return event.frame
+    except Exception as e:
+        logger.error(f"Failed to get latest image: {e}")
+        return None
+    finally:
+        if video_stream:
+            await video_stream.aclose()
+
 async def entrypoint(ctx: JobContext):
-    await ctx.connect(auto_subscribe=agents.AutoSubscribe.AUDIO_ONLY)
+    await ctx.connect(auto_subscribe=agents.AutoSubscribe.SUBSCRIBE_ALL)
     sessions = {}
 
     def handle_participant(participant: rtc.Participant):
@@ -76,6 +120,17 @@ async def entrypoint(ctx: JobContext):
                 logger.info(f"Participant {part.identity} disconnected")
 
         ctx.room.on("participant_disconnected", on_participant_disconnected)
+
+    async def before_llm_cb(assistant: VoicePipelineAgent, chat_ctx: llm.ChatContext):
+        """
+        Callback that runs right before the LLM generates a response.
+        Captures the current video frame and adds it to the conversation context.
+        """
+        latest_image = await get_latest_image(ctx.room)
+        if latest_image:
+            image_content = [ChatImage(image=latest_image)]
+            chat_ctx.messages.append(ChatMessage(role="user", content=image_content))
+            logger.debug("Added latest frame to conversation context")
 
     # Handle existing and new participants
     for participant in ctx.room.remote_participants.values():

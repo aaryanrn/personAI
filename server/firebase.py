@@ -3,7 +3,7 @@ from firebase_admin import credentials, firestore
 
 def initialize_firebase():
     if not firebase_admin._apps:
-        cred = credentials.Certificate("../personai-dfb78-firebase-adminsdk-fbsvc-7ce7b2b7d7.json")
+        cred = credentials.Certificate("firebaseCreds.json")
         firebase_admin.initialize_app(cred)
     return firestore.client()
 
