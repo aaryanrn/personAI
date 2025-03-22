@@ -15,9 +15,9 @@ export const ConfigurationPanelItem: React.FC<ConfigurationPanelItemProps> = ({
   deviceSelectorKind,
 }) => {
   return (
-    <div className="w-full text-black py-4 border-b border-b-gray-800 font-bold relative">
+    <div className="w-full text-black pb-2 border-b border-b-gray-800 font-bold relative">
       <div className="flex flex-row justify-between items-center px-4 text-xs uppercase tracking-wider">
-        <h3>{title}</h3>
+        <p className="text-lg">{title}</p>
         {deviceSelectorKind && (
           <span className="flex flex-row gap-2">
             <TrackToggle
@@ -32,7 +32,7 @@ export const ConfigurationPanelItem: React.FC<ConfigurationPanelItemProps> = ({
           </span>
         )}
       </div>
-      <div className="px-4 py-2 text-xs text-gray-700 leading-normal font-semibold">
+      <div className="px-4 py-2 text-s text-gray-800 leading-normal font-medium">
         {children}
       </div>
     </div>

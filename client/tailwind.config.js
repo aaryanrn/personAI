@@ -59,8 +59,11 @@ module.exports = {
       black: colors.black,
       white: colors.white,
       gray: colors.neutral,
-      base: "#F5E7DE",
+      base: "#ffe6d6",
+      base_2: "#ffd6bd",
+      base_3: "#F5E7DE",
       accent: "#F2BFA4",
+      prim: "#6f37f0",
       ...customColors
     },
     extend: {

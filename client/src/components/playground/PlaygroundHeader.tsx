@@ -5,6 +5,7 @@ import { useConfig } from "@/hooks/useConfig";
 import { ConnectionState } from "livekit-client";
 import { ReactNode } from "react";
 import Link from 'next/link';
+import Logo from "../Logo";
 
 
 type PlaygroundHeader = {
@@ -36,9 +37,10 @@ export const PlaygroundHeader = ({
     >
       <div className="flex items-center gap-3 basis-2/3">
         <div className="flex lg:basis-1/2">
-        <Link href="/">
+        <Link href="/" className="ml-5">
           {/* If logo is passed, render it, otherwise render the default LKLogo component */}
-          {logo ?? <LKLogo />}
+          {/* {logo ?? <LKLogo />} */}
+          <Logo />
         </Link>
 
         </div>

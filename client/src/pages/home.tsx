@@ -84,7 +84,7 @@ import {
           <meta property="og:image:height" content="630" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <main className="relative flex flex-col justify-center px-4 items-center h-full w-full bg-F5E7DE repeating-square-background">
+        <main className="relative flex flex-col justify-center px-4 items-center h-full w-full bg-base repeating-square-background">
           <AnimatePresence>
             {toastMessage && (
               <motion.div

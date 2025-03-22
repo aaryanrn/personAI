@@ -13,7 +13,7 @@ export const NameValueRow: React.FC<NameValueRowProps> = ({
 }) => {
   return (
     <div className="flex flex-row w-full items-baseline text-sm">
-      <div className="grow shrink-0 text-gray-500">{name}</div>
+      <div className="grow shrink-0 text-gray-700">{name}</div>
       <div className={`text-xs shrink text-${valueColor} text-right`}>
         {value}
       </div>

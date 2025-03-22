@@ -63,7 +63,18 @@ export default function Playground({
   //   }
   // }, [router.query.persona]);
   const router = useRouter();
-  const [persona, setPersona] = useState(null);
+  // const [persona, setPersona] = useState(null);
+  const [persona, setPersona] = useState({
+    // type:"",
+    persona_name: "",
+    sex: "",
+    traits: "",
+    tone: "",
+    purpose: "",
+    response_type: "",
+    backstory: "",
+    // avatar:"",
+  });
 
   useEffect(() => {
     if (router.query.persona) {
@@ -73,6 +84,7 @@ export default function Playground({
         : JSON.parse(router.query.persona[0]);  // Use the first element if it's an array
 
       setPersona(personaData);
+      console.log(persona)
     }
   }, [router.query.persona]);
 
@@ -243,10 +255,23 @@ export default function Playground({
   const chatTileContent = useMemo(() => {
     if (voiceAssistant.audioTrack) {
       return (
+        <>
         <TranscriptionTile
           agentAudioTrack={voiceAssistant.audioTrack}
           accentColor={config.settings.theme_color}
         />
+        {config.settings.outputs.audio && (
+          // <PlaygroundTile
+          //   title="Audio"
+          //   className="w-full h-fit grow"
+          //   childrenClassName="justify-center"
+          // >
+          <>
+            {audioTileContent}
+          </>
+          // </PlaygroundTile>
+        )}
+        </>
       );
     }
     return <></>;
@@ -272,7 +297,7 @@ export default function Playground({
       <div className="flex flex-col gap-4 h-full w-full items-start overflow-y-auto">
         {config.description && (
           <ConfigurationPanelItem title="Description">
-            This is PersonaAI assistant by team MO:Mo:. It is an advanced personality and background story based customizable voice assistant which can do conversation in real time.
+            This is <span className="font-bold">personAI</span> assistant by team MO:MO. It is an advanced personality and background story based customizable voice assistant which can do conversation in real time.
           </ConfigurationPanelItem>
         )}
 
@@ -486,7 +511,7 @@ export default function Playground({
   return (
     <>
       <PlaygroundHeader
-        title="Persona AI by Team MO:MO"
+        title=""
         logo={logo}
         githubLink={config.github_link}
         height={headerHeight}
@@ -531,29 +556,18 @@ export default function Playground({
           <PlaygroundTile
             title="Chat"
             className="h-full grow basis-1/4 hidden lg:flex w-full"
+            persona_name={persona?.persona_name}
           >
             {chatTileContent}
           </PlaygroundTile>
         )}
         <PlaygroundTile
           padding={false}
-          backgroundColor="red-200"
+          backgroundColor="red"
           className="h-full w-full basis-1/4 items-start overflow-y-auto hidden max-w-[480px] lg:flex"
           childrenClassName="h-full grow items-start"
         >
           {settingsTileContent}
-          {config.settings.outputs.audio && (
-            <PlaygroundTile
-              title="Audio"
-              className="w-full h-fit grow"
-              childrenClassName="justify-center"
-            >
-              {audioTileContent}
-            </PlaygroundTile>
-          )}
-          <p>
-            {room?.localParticipant?.identity}
-          </p>
         </PlaygroundTile>
       </div>
     </>

@@ -10,6 +10,7 @@ type PlaygroundTileProps = {
   childrenClassName?: string;
   padding?: boolean;
   backgroundColor?: string;
+  persona_name?: string;
 };
 
 export type PlaygroundTab = {
@@ -29,6 +30,7 @@ export const PlaygroundTile: React.FC<PlaygroundTileProps> = ({
   childrenClassName,
   padding = true,
   backgroundColor = "transparent",
+  persona_name,
 }) => {
   const contentPadding = padding ? 4 : 0;
   return (
@@ -37,12 +39,12 @@ export const PlaygroundTile: React.FC<PlaygroundTileProps> = ({
     >
       {title && (
         <div
-          className="font-bold flex items-center justify-center text-xs uppercase py-2 border-b border-b-gray-800 tracking-wider"
+          className="font-bold flex items-center justify-center text-lg uppercase py-2 border-b border-b-gray-800 tracking-wider"
           style={{
             height: `${titleHeight}px`,
           }}
         >
-          <h2>{title}</h2>
+          <h2>{persona_name}</h2>
         </div>
       )}
       <div
