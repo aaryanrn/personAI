@@ -10,7 +10,7 @@ from livekit.agents import JobContext, WorkerOptions, cli, llm
 from livekit.agents.voice_assistant import VoiceAssistant, VoicePipelineAgent
 from livekit.agents.llm import ChatMessage, ChatImage
 from models import AssistantComponents
-from persona import generate_system_prompt, update_persona_ai, PERSONA
+from persona import generate_system_prompt, update_persona_ai
 from firebase import fetch_data_from_firebase
 
 # Load environment variables
@@ -57,7 +57,7 @@ class ParticipantSession:
     def __init__(self, ctx: JobContext, participant: rtc.Participant):
         self.ctx = ctx
         self.participant = participant
-        self.components = AssistantComponents.create(PERSONA)
+        self.components = AssistantComponents.create()
         self.last_detected_lang = "en"
         self.last_detected_voice = "en-US-Standard-H"
 
@@ -139,22 +139,27 @@ async def entrypoint(ctx: JobContext):
     await ctx.connect(auto_subscribe=agents.AutoSubscribe.SUBSCRIBE_ALL)
     sessions = {}
 
-    def handle_participant(participant: rtc.Participant):
+    async def handle_participant(participant: rtc.Participant):
         """Handle new participants joining."""
         identity = participant.identity
         count = 2
+        print(identity)
         while count > 0:
             result = fetch_data_from_firebase(identity)
             if result:
+                print("result", result)
                 update_persona_ai(result)
                 break
             logger.info("No data found. Retrying in 1 second...")
             time.sleep(1)
             count -= 1
 
+        print("after update",generate_system_prompt())
         session = ParticipantSession(ctx, participant)
         sessions[participant.sid] = session
 
+        await asyncio.sleep(1)  # Let stream warm up
+        await session.components.assistant.say("Hey, There! How can I help you today?", allow_interruptions=True)
         def on_participant_disconnected(part: rtc.RemoteParticipant):
             if part.sid == participant.sid:
                 asyncio.create_task(session.cleanup())
@@ -164,8 +169,8 @@ async def entrypoint(ctx: JobContext):
         ctx.room.on("participant_disconnected", on_participant_disconnected)
 
     for participant in ctx.room.remote_participants.values():
-        handle_participant(participant)
-    ctx.room.on("participant_connected", lambda p: handle_participant(p))
+        asyncio.create_task(handle_participant(participant))
+    ctx.room.on("participant_connected", lambda p: asyncio.create_task(handle_participant(p)))
 
     while True:
         await asyncio.sleep(1)

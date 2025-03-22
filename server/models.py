@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from dataclasses import dataclass
 from livekit.plugins import silero, openai, google
+from persona import getPersona
 
 # Load environment variables
 load_dotenv()
@@ -11,8 +12,8 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 # Define voices for different personas
 VOICE_MAP = {
-    "male": "shimmer",  # Example male voice
-    "female": "nova",   # Example female voice
+    "male": "alloy",  # Example male voice
+    "female": "nova",   # Example male voice
     "neutral": "echo"   # Example gender-neutral voice
 }
 
@@ -26,10 +27,12 @@ class AssistantComponents:
     assistant: object  # Placeholder for VoiceAssistant
 
     @staticmethod
-    def create(persona):
+    def create():
         """Factory method to create an instance with configured components."""
         # Determine voice based on persona sex
+        persona = getPersona()
         voice = VOICE_MAP.get(persona.get("sex", "neutral").lower(), "echo")
+        print(persona)
 
         return AssistantComponents(
             vad=silero.VAD.load(),
