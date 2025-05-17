@@ -89,8 +89,8 @@ python main.py start
 
 👨‍💻 **Developed by:**  
 - **Aaryan Agrawal** – [itsaaryanagrawal@gmail.com](mailto:itsaaryanagrawal@gmail.com)  
-- **Anmol Bhusal** – [bhishanpangeni2003@gmail.com](mailto:bhishanpangeni2003@gmail.com)  
-- **Bhishan Pangeni** – [anmol52490@gmail.com](mailto:anmol52490@gmail.com)  
+- **Anmol Bhusal** – [anmol52490@gmail.com](mailto:anmol52490@gmail.com)
+- **Bhishan Pangeni** – [bhishanpangeni2003@gmail.com](mailto:bhishanpangeni2003@gmail.com)  
 - **Raj Kumar Sah** – [rajsah5556@gmail.com](mailto:rajsah5556@gmail.com)  
 
 ---
