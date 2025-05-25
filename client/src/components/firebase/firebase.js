@@ -1,5 +1,6 @@
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { getApp, initializeApp } from "firebase/app";
+import { cond } from "lodash";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -22,6 +23,9 @@ const db = getFirestore(app);
 const sendDataToFirebase = async (persona, identity) => {
   try {
     const formData = { ...persona, identity };
+    console.log("Sending data to Firebase:", formData);
+    console.log("Identity:", identity);
+    
     await setDoc(doc(db, "personas", identity), formData);
     console.log("Data successfully written to Firebase");
   } catch (error) {

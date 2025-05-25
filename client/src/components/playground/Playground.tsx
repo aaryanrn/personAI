@@ -201,7 +201,7 @@ export default function Playground({
     document.body.style.setProperty(
       "--lk-theme-color",
       // @ts-ignore
-      tailwindTheme.colors[config.settings.theme_color]["500"]
+      tailwindTheme.colors[config.settings.theme_color]["500"] 
     );
     document.body.style.setProperty(
       "--lk-drop-shadow",

@@ -4,17 +4,16 @@ const colors = require('tailwindcss/colors')
 const shades = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
 const colorList = ['gray', 'green', 'cyan', 'amber', 'violet', 'blue', 'rose', 'pink', 'teal', "red"];
 const uiElements = ['bg', 'selection:bg', 'border', 'text', 'hover:bg', 'hover:border', 'hover:text', 'ring', 'focus:ring'];
-const customColors = {
-  cyan: colors.cyan,
-  green: colors.green,
-  amber: colors.amber,
-  violet: colors.violet,
-  blue: colors.blue,
-  rose: colors.rose,
-  pink: colors.pink,
-  teal: colors.teal,
-  red: colors.red,
-};
+// const colorList = ['cyan', 'green', 'amber', 'violet', 'blue', 'rose', 'pink', 'teal', 'red'];
+
+const customColors = {};
+for (const color of colorList) {
+  customColors[color] = {
+    500: colors[color][500],
+    600: colors[color][600],
+    700: colors[color][700],
+  };
+}
 
 let customShadows = {};
 let shadowNames = [];
