@@ -8,6 +8,10 @@ body {
   --lk-va-bar-width: 4px;
   --lk-va-border-radius: 2px;
 }
+body.dark {
+  background: #18181b;
+  color: #f3f4f6;
+}
 
 #__next {
   width: 100%;
@@ -25,17 +29,17 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(24, 24, 27, 0.05);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(24, 24, 27, 0.2);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Even lighter grey thumb on hover */
+  background: #333;
 }
 
 ::-webkit-scrollbar {

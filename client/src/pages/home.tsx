@@ -7,6 +7,7 @@ import {
   import { Inter } from "next/font/google";
   import Head from "next/head";
   import { useCallback, useState } from "react";
+  import { useRouter } from "next/router";
   
   import { PlaygroundConnect } from "@/components/PlaygroundConnect";
   import Playground from "@/components/playground/Playground";
@@ -84,7 +85,7 @@ import {
           <meta property="og:image:height" content="630" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <main className="relative flex flex-col justify-center px-4 items-center h-full w-full bg-base repeating-square-background">
+        <main className="relative flex flex-col justify-center px-4 items-center h-full w-full bg-base dark:bg-black text-gray-900 dark:text-gray-100 repeating-square-background">
           <AnimatePresence>
             {toastMessage && (
               <motion.div

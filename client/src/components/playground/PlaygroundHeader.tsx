@@ -30,7 +30,7 @@ export const PlaygroundHeader = ({
   const { config } = useConfig();
   return (
     <div
-      className={`flex gap-4 pt-4 text-black-500 justify-between items-center shrink-0`}
+      className={`flex gap-4 pt-4 text-black-500 dark:text-white justify-between items-center shrink-0`}
       style={{
         height: height + "px",
       }}
@@ -44,7 +44,7 @@ export const PlaygroundHeader = ({
         </Link>
 
         </div>
-        <div className="lg:basis-1/2 lg:text-center text-xs lg:text-base lg:font-semibold text-black">
+        <div className="lg:basis-1/2 lg:text-center text-xs lg:text-base lg:font-semibold text-black dark:text-white">
           {title}
         </div>
       </div>

@@ -2,8 +2,5 @@
 import Page from './page'
 
 export default function Start() {
-  return (
-    // <Landing />
-    <Page />
-  );
+  return <Page />;
 }

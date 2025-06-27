@@ -112,7 +112,7 @@ export default function PersonaSelection() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <div className="bg-base text-gray-900 min-h-screen flex flex-col font-sans">
+      <div className="bg-base dark:bg-black text-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans">
         {/* Header */}
         <header className="container mx-auto py-6 px-4 flex justify-between items-center">
           <Link href="/">
@@ -123,7 +123,7 @@ export default function PersonaSelection() {
                 <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
                 <line x1="12" x2="12" y1="19" y2="22"></line>
               </svg>
-              <span className="text-3xl font-bold text-black">personAI</span>
+              <span className="text-3xl font-bold text-black dark:text-white">personAI</span>
             </div>
           </Link>
         </header>
@@ -132,7 +132,7 @@ export default function PersonaSelection() {
           {!showForm ? (
             <>
               <h1 className="text-4xl font-bold mb-8">
-                <span className="text-black">Choose Your</span> <span className="text-prim">Persona</span>
+                <span className="text-black dark:text-white">Choose Your</span> <span className="text-prim">Persona</span>
               </h1>
 
               {/* Persona Cards */}
@@ -147,9 +147,9 @@ export default function PersonaSelection() {
                     <button
                       key={p.persona_name}
                       onClick={() => handlePrebuiltSelection(p.persona_name)}
-                      className="persona-card border-2 border-prim bg-white w-72 h-96 p-6 rounded-lg flex flex-col items-center transition hover:scale-105"
+                      className="persona-card border-2 border-prim bg-white dark:bg-gray-900 w-72 h-96 p-6 rounded-lg flex flex-col items-center transition hover:scale-105"
                     >
-                      <div className="w-full h-72 rounded-lg bg-gray-200 flex items-center justify-center">
+                      <div className="w-full h-72 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                         <img src={p.avatar} alt={p.persona_name} className="w-5/6 h-5/6 object-cover rounded-lg" />
                       </div>
                       <p className="mt-4 text-xl font-bold">
@@ -162,9 +162,9 @@ export default function PersonaSelection() {
                 {/* Custom Persona Card */}
                 <button
                   onClick={handleCustomSelection}
-                  className="persona-card border-2 border-prim bg-white w-72 h-96 p-6 rounded-lg flex flex-col items-center transition hover:scale-105"
+                  className="persona-card border-2 border-prim bg-white dark:bg-gray-900 w-72 h-96 p-6 rounded-lg flex flex-col items-center transition hover:scale-105"
                 >
-                  <div className="w-full h-72 rounded-lg bg-gray-200 flex items-center justify-center">
+                  <div className="w-full h-72 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                     <span className="text-7xl font-bold text-prim">+</span>
                   </div>
                   <p className="mt-4 text-xl font-bold">
@@ -176,9 +176,9 @@ export default function PersonaSelection() {
             </>
           ) : (
             /* Custom Persona Form */
-            <form onSubmit={handleAddPersona} className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg border-2 border-prim">
+            <form onSubmit={handleAddPersona} className="w-full max-w-lg bg-gray-900 dark:bg-gray-800 p-8 rounded-lg shadow-lg border-2 border-prim">
               <h1 className="text-4xl font-bold mb-8">
-                <span className="text-black">Create</span> <span className="text-prim">Persona</span>
+                <span className="text-black dark:text-white">Create</span> <span className="text-prim">Persona</span>
               </h1>
               <div className="space-y-5">
                 {[
@@ -191,7 +191,7 @@ export default function PersonaSelection() {
                   { name: "backstory", placeholder: "e.g., AI created in 2030 to help users" },
                 ].map(({ name, placeholder }) => (
                   <div key={name}>
-                    <label className="block text-gray-700 font-medium">{name.replace("_", " ").toUpperCase()}</label>
+                    <label className="block text-gray-700 dark:text-white font-medium">{name.replace("_", " ").toUpperCase()}</label>
                     {name === "backstory" ? (
                       <textarea
                         name={name}
@@ -216,7 +216,7 @@ export default function PersonaSelection() {
               </div>
 
               <div className="flex justify-between mt-6">
-                <button type="button" onClick={() => setShowForm(false)} className="px-6 py-3 border border-gray-500 text-gray-700 rounded-md font-medium hover:bg-gray-100 transition">
+                <button type="button" onClick={() => setShowForm(false)} className="px-6 py-3 border border-gray-500 text-gray-700 dark:text-white rounded-md font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                   Back
                 </button>
                 <button type="submit" className="px-6 py-3 bg-prim text-white rounded-md font-medium hover:bg-purple-700 transition">

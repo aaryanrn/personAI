@@ -15,7 +15,7 @@ PERSONA = {
 
 def update_persona_ai(pers):
     global PERSONA
-      # Make sure we're modifying the global PERSONA object
+    # Make sure we're modifying the global PERSONA object
     PERSONA = {
         "persona_name": pers.get("persona_name"),
         "sex": pers.get("sex", "Female"),

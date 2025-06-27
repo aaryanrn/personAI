@@ -15,7 +15,7 @@ export const ConfigurationPanelItem: React.FC<ConfigurationPanelItemProps> = ({
   deviceSelectorKind,
 }) => {
   return (
-    <div className="w-full text-black pb-2 border-b border-b-gray-800 font-bold relative">
+    <div className="w-full text-black dark:text-white pb-2 border-b border-b-gray-800 font-bold relative">
       <div className="flex flex-row justify-between items-center px-4 text-xs uppercase tracking-wider">
         <p className="text-lg">{title}</p>
         {deviceSelectorKind && (

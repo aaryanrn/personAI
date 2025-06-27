@@ -1,10 +1,18 @@
 import asyncio
 import time
+import threading
 from dotenv import load_dotenv
 from livekit import agents
 from livekit.agents import AgentSession, Agent, RoomInputOptions
+from livekit import rtc  # LiveKit RTC core
+from firebase import fetch_data_from_firebase  # You must implement this
+from persona import update_persona_ai, generate_system_prompt  # You must implement these
+
+# Load .env variables
+load_dotenv()
+
+# ✅ Plugin imports (always import regardless of thread context)
 from livekit.plugins import (
-    openai,
     cartesia,
     deepgram,
     noise_cancellation,
@@ -12,12 +20,12 @@ from livekit.plugins import (
     google,
 )
 from livekit.plugins.turn_detector.multilingual import MultilingualModel
-from livekit import rtc  # Add at the top
-from firebase import fetch_data_from_firebase  # You must implement this
-from persona import update_persona_ai, generate_system_prompt  # You must implement these
 
-# Load .env variables
-load_dotenv()
+# Log based on thread context
+if threading.current_thread() != threading.main_thread():
+    print("⚠️ Not on main thread — be cautious with plugin initialization.")
+else:
+    print("✅ Plugins initialized on main thread.")
 
 # Custom agent with dynamic instructions
 class Assistant(Agent):

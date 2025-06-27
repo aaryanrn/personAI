@@ -20,7 +20,7 @@ export const ChatMessage = ({
         <div
           className={`text-lg text-${
             isSelf ? "gray-800" : accentColor + "-900 text-ts-" + accentColor
-          } uppercase text-s`}
+          } uppercase text-s dark:text-white`}
         >
           {name}
         </div>
@@ -28,7 +28,7 @@ export const ChatMessage = ({
       <div
         className={`font-medium pr-4 text-${isSelf ? "stone-500" : accentColor + "-800"} text-s ${
           isSelf ? "" : `drop-shadow-[0_1px_2px_rgba(${accentColor},0.3)]`
-        } whitespace-pre-line`}
+        } whitespace-pre-line dark:text-white`}
       >
         {message}
       </div>

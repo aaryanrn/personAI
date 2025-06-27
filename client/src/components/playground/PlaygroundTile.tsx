@@ -35,7 +35,7 @@ export const PlaygroundTile: React.FC<PlaygroundTileProps> = ({
   const contentPadding = padding ? 4 : 0;
   return (
     <div
-      className={`m-1 p-2 flex flex-col border rounded-sm border-gray-800 text-black bg-${backgroundColor} ${className}`}
+      className={`m-1 p-2 flex flex-col border rounded-sm border-gray-800 text-black dark:text-white bg-${backgroundColor} ${className}`}
     >
       {title && (
         <div
@@ -44,11 +44,11 @@ export const PlaygroundTile: React.FC<PlaygroundTileProps> = ({
             height: `${titleHeight}px`,
           }}
         >
-          <h2>{persona_name}</h2>
+          <h2 className="text-black dark:text-white">{persona_name}</h2>
         </div>
       )}
       <div
-        className={`flex flex-col items-center grow w-full font-bold !text-black ${childrenClassName}`}
+        className={`flex flex-col items-center grow w-full font-bold !text-black dark:text-white ${childrenClassName}`}
         style={{
           height: `calc(100% - ${title ? titleHeight + "px" : "0px"})`,
           padding: `${contentPadding * 4}px`,

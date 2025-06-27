@@ -15,4 +15,4 @@ def fetch_data_from_firebase(identity):
     if doc.exists:
         return doc.to_dict()
     else:
-        return ""
+        return None

@@ -13,7 +13,7 @@ export const NameValueRow: React.FC<NameValueRowProps> = ({
 }) => {
   return (
     <div className="flex flex-row w-full items-baseline text-sm">
-      <div className="grow shrink-0 text-gray-700">{name}</div>
+      <div className="grow shrink-0 text-black dark:text-white">{name}</div>
       <div className={`text-xs shrink text-${valueColor} text-right`}>
         {value}
       </div>
@@ -41,7 +41,7 @@ export const EditableNameValueRow: React.FC<EditableNameValueRowProps> = ({
   if (editable && onValueChange) {
     return (
       <div className="flex flex-row w-full items-baseline text-sm">
-        <div className="grow shrink-0 text-black">{name}</div>
+        <div className="grow shrink-0 text-black dark:text-white">{name}</div>
         <input
           type="text"
           value={value}
